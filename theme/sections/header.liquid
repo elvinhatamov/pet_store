@@ -1,0 +1,126 @@
+<header class="site-header" id="SiteHeader">
+  <div class="container">
+    <div class="header-wrapper">
+
+      <!-- Logo -->
+      <div class="header__logo">
+        <a href="/" aria-label="{{ shop.name }}">
+          {%- if section.settings.logo_image != blank -%}
+            {{ section.settings.logo_image | image_url: width: section.settings.logo_width | image_tag: loading: 'eager', alt: shop.name, width: section.settings.logo_width }}
+          {%- else -%}
+            <span class="header__logo-text">{{ shop.name }}</span>
+          {%- endif -%}
+        </a>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav class="header__nav" aria-label="Main navigation">
+        <ul>
+          {%- if section.settings.menu != blank -%}
+            {%- for link in linklists[section.settings.menu].links -%}
+              <li>
+                <a href="{{ link.url }}" {% if link.active %}class="active" aria-current="page"{% endif %}>
+                  {{ link.title }}
+                </a>
+              </li>
+            {%- endfor -%}
+          {%- else -%}
+            <li><a href="/">Home</a></li>
+            <li><a href="/collections/all">Shop</a></li>
+            <li><a href="/pages/about">About</a></li>
+            <li><a href="/blogs/news">Blog</a></li>
+            <li><a href="/pages/contact">Contact</a></li>
+          {%- endif -%}
+        </ul>
+      </nav>
+
+      <!-- Icons -->
+      <div class="header__icons">
+        <button class="header__icon-btn" data-search-open aria-label="{{ 'search.title' | t }}" aria-controls="SearchOverlay">
+          {% render 'icon-search' %}
+        </button>
+
+        <a href="/cart" class="header__icon-btn" data-cart-open aria-label="{{ 'cart.title' | t }} ({{ cart.item_count }} {{ 'cart.items' | t }})">
+          {% render 'icon-cart' %}
+          <span class="cart-count" data-cart-count data-count="{{ cart.item_count }}">{{ cart.item_count }}</span>
+        </a>
+
+        {%- if shop.customer_accounts_enabled -%}
+          <a href="{%- if customer -%}/account{%- else -%}/account/login{%- endif -%}" class="header__icon-btn" aria-label="{{ 'customer.account.title' | t }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </a>
+        {%- endif -%}
+
+        <!-- Mobile hamburger -->
+        <button class="header__icon-btn header__menu-btn" id="MobileMenuOpen" aria-label="{{ 'general.accessibility.open_menu' | t }}" aria-expanded="false" aria-controls="MobileNav">
+          {% render 'icon-menu' %}
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Nav Drawer -->
+<div class="mobile-nav" id="MobileNav" aria-hidden="true">
+  <div class="mobile-nav__header">
+    <span class="header__logo-text">{{ shop.name }}</span>
+    <button class="mobile-nav__close" id="MobileMenuClose" aria-label="{{ 'general.accessibility.close_menu' | t }}">
+      {% render 'icon-close' %}
+    </button>
+  </div>
+  <nav class="mobile-nav__links" aria-label="Mobile navigation">
+    {%- if section.settings.menu != blank -%}
+      {%- for link in linklists[section.settings.menu].links -%}
+        <a href="{{ link.url }}" {% if link.active %}aria-current="page"{% endif %}>{{ link.title }}</a>
+      {%- endfor -%}
+    {%- else -%}
+      <a href="/">Home</a>
+      <a href="/collections/all">Shop</a>
+      <a href="/pages/about">About</a>
+      <a href="/blogs/news">Blog</a>
+      <a href="/pages/contact">Contact</a>
+    {%- endif -%}
+    {%- if shop.customer_accounts_enabled -%}
+      {%- if customer -%}
+        <a href="/account">My Account</a>
+        <a href="/account/logout">Log out</a>
+      {%- else -%}
+        <a href="/account/login">Log in</a>
+        <a href="/account/register">Create account</a>
+      {%- endif -%}
+    {%- endif -%}
+  </nav>
+</div>
+<div class="mobile-nav-overlay" id="MobileNavOverlay" aria-hidden="true"></div>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo_image",
+      "label": "Logo image"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 60,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo width",
+      "default": 160
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Navigation menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}

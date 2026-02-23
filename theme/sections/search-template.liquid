@@ -1,0 +1,68 @@
+<div class="search-template">
+  <div class="container">
+    <div class="search-template__header">
+      <h1 class="search-template__title">
+        {%- if search.performed -%}
+          {{ 'search.results_for' | t: terms: search.terms | default: 'Search results for' }}: &ldquo;{{ search.terms | escape }}&rdquo;
+        {%- else -%}
+          {{ 'search.title' | t | default: 'Search' }}
+        {%- endif -%}
+      </h1>
+
+      <form class="search-form" action="/search" method="get" role="search">
+        <input type="hidden" name="type" value="product">
+        <input
+          class="form-input"
+          type="search"
+          name="q"
+          value="{{ search.terms | escape }}"
+          placeholder="{{ 'search.placeholder' | t | default: 'Search products...' }}"
+          aria-label="{{ 'search.placeholder' | t | default: 'Search products' }}"
+          autocomplete="off"
+        >
+        <button type="submit" class="btn btn--primary">{{ 'search.submit' | t | default: 'Search' }}</button>
+      </form>
+    </div>
+
+    {%- if search.performed -%}
+      {%- if search.results_count == 0 -%}
+        <div class="text-center" style="padding: 3rem 0;">
+          <p style="font-size:3rem; margin-bottom:1rem;">🔍</p>
+          <h2>{{ 'search.no_results' | t | default: 'No results found' }}</h2>
+          <p style="color:var(--color-text-muted); margin: 1rem 0 2rem;">
+            {{ 'search.no_results_text' | t | default: 'Try a different search term or browse our collections.' }}
+          </p>
+          <a href="/collections/all" class="btn btn--primary">{{ 'collection.all_products' | t | default: 'Browse All Products' }}</a>
+        </div>
+      {%- else -%}
+        <p style="margin-bottom:var(--spacing-xl); color:var(--color-text-muted); font-size:var(--font-size-sm);">
+          {{ 'search.results_count' | t: count: search.results_count | default: search.results_count | append: ' results found' }}
+        </p>
+
+        {% paginate search.results by 24 %}
+          <div class="product-grid">
+            {%- for item in search.results -%}
+              {%- if item.object_type == 'product' -%}
+                {% render 'product-card', product: item %}
+              {%- else -%}
+                <!-- Page result -->
+                <article style="border:1px solid var(--color-border); border-radius:var(--radius-lg); padding:var(--spacing-lg);">
+                  <h3 style="margin-bottom:0.5rem;"><a href="{{ item.url }}" style="color:var(--color-primary);">{{ item.title }}</a></h3>
+                  <p style="color:var(--color-text-muted); font-size:var(--font-size-sm);">{{ item.content | strip_html | truncatewords: 30 }}</p>
+                </article>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          {% render 'pagination', paginate: paginate %}
+        {% endpaginate %}
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Search",
+  "settings": []
+}
+{% endschema %}

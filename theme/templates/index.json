@@ -1,0 +1,166 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-banner",
+      "settings": {
+        "subheading": "Welcome to M&M Pet Store",
+        "heading": "Everything Your Pet Deserves",
+        "description": "Premium food, toys, and accessories for your beloved companions. Fast delivery, great prices, and a 100% happiness guarantee.",
+        "button_label": "Shop Now",
+        "button_link": "/collections/all",
+        "secondary_button_label": "View Collections",
+        "secondary_button_link": "/collections",
+        "overlay_opacity": 40,
+        "height": 600,
+        "content_align": "left"
+      }
+    },
+    "featured-collections": {
+      "type": "featured-collections",
+      "settings": {
+        "heading": "Shop by Category",
+        "subheading": "Find everything your pet needs"
+      },
+      "blocks": {
+        "col-1": {
+          "type": "collection",
+          "settings": {
+            "title": "Dog Supplies",
+            "link_label": "Shop Dogs"
+          }
+        },
+        "col-2": {
+          "type": "collection",
+          "settings": {
+            "title": "Cat Supplies",
+            "link_label": "Shop Cats"
+          }
+        },
+        "col-3": {
+          "type": "collection",
+          "settings": {
+            "title": "Bird & Small Pets",
+            "link_label": "Shop More"
+          }
+        },
+        "col-4": {
+          "type": "collection",
+          "settings": {
+            "title": "Pet Food",
+            "link_label": "Shop Food"
+          }
+        }
+      },
+      "block_order": ["col-1", "col-2", "col-3", "col-4"]
+    },
+    "featured-products": {
+      "type": "featured-products",
+      "settings": {
+        "heading": "Best Sellers",
+        "subheading": "Our most loved pet products",
+        "view_all_label": "View All Products",
+        "view_all_link": "/collections/all"
+      },
+      "blocks": {
+        "prod-1": {"type": "product", "settings": {}},
+        "prod-2": {"type": "product", "settings": {}},
+        "prod-3": {"type": "product", "settings": {}},
+        "prod-4": {"type": "product", "settings": {}}
+      },
+      "block_order": ["prod-1", "prod-2", "prod-3", "prod-4"]
+    },
+    "trust-badges": {
+      "type": "trust-badges",
+      "settings": {},
+      "blocks": {
+        "badge-1": {
+          "type": "badge",
+          "settings": {
+            "icon": "shipping",
+            "title": "Free Shipping",
+            "text": "On orders over $50"
+          }
+        },
+        "badge-2": {
+          "type": "badge",
+          "settings": {
+            "icon": "returns",
+            "title": "Easy Returns",
+            "text": "30-day hassle-free returns"
+          }
+        },
+        "badge-3": {
+          "type": "badge",
+          "settings": {
+            "icon": "secure",
+            "title": "Secure Checkout",
+            "text": "256-bit SSL encryption"
+          }
+        },
+        "badge-4": {
+          "type": "badge",
+          "settings": {
+            "icon": "support",
+            "title": "24/7 Support",
+            "text": "Always here to help"
+          }
+        }
+      },
+      "block_order": ["badge-1", "badge-2", "badge-3", "badge-4"]
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "settings": {
+        "heading": "Happy Pet Parents",
+        "subheading": "Don't just take our word for it"
+      },
+      "blocks": {
+        "review-1": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "text": "My dog absolutely loves the food I ordered from M&M Pet Store. Fast delivery and great quality!",
+            "author": "Sarah M.",
+            "author_label": "Verified Buyer"
+          }
+        },
+        "review-2": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "text": "Best pet store online! The products are amazing and my cat is obsessed with her new toys.",
+            "author": "James R.",
+            "author_label": "Verified Buyer"
+          }
+        },
+        "review-3": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 4,
+            "text": "Great selection of products. Customer service was very helpful when I had a question about my order.",
+            "author": "Emily T.",
+            "author_label": "Verified Buyer"
+          }
+        }
+      },
+      "block_order": ["review-1", "review-2", "review-3"]
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "heading": "Join the M&M Pet Family",
+        "subheading": "Subscribe for exclusive deals, pet tips, and new product alerts",
+        "button_label": "Subscribe",
+        "disclaimer": "No spam, ever. Unsubscribe anytime."
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "featured-collections",
+    "featured-products",
+    "trust-badges",
+    "testimonials",
+    "newsletter"
+  ]
+}

@@ -1,0 +1,18 @@
+<div class="not-found">
+  <div class="container">
+    <div class="not-found__code">404</div>
+    <h1 class="not-found__title">{{ 'not_found.title' | t | default: 'Page Not Found' }}</h1>
+    <p class="not-found__text">{{ 'not_found.description' | t | default: 'The page you are looking for may have been moved, deleted, or doesn\'t exist.' }}</p>
+    <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+      <a href="/" class="btn btn--primary">{{ 'not_found.home' | t | default: 'Go Home' }}</a>
+      <a href="/collections/all" class="btn btn--outline">{{ 'not_found.shop' | t | default: 'Browse Products' }}</a>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "404",
+  "settings": []
+}
+{% endschema %}

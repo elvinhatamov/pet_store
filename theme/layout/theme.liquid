@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  {{ content_for_header }}
+
+  <title>
+    {{ page_title }}{% if page_title != shop.name %} – {{ shop.name }}{% endif %}
+  </title>
+
+  {% if page_description %}
+    <meta name="description" content="{{ page_description | escape }}">
+  {% endif %}
+
+  <!-- Canonical -->
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  <!-- Favicon -->
+  {% if settings.favicon %}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | img_url: '32x32' }}">
+  {% endif %}
+
+  <!-- OpenGraph -->
+  <meta property="og:site_name" content="{{ shop.name }}">
+  <meta property="og:url" content="{{ canonical_url }}">
+  <meta property="og:title" content="{{ page_title | escape }}">
+  <meta property="og:type" content="website">
+  {% if page_description %}
+    <meta property="og:description" content="{{ page_description | escape }}">
+  {% endif %}
+  {% if page_image %}
+    <meta property="og:image" content="https:{{ page_image | img_url: '1200x628' }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="628">
+  {% endif %}
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ page_title | escape }}">
+  {% if page_description %}
+    <meta name="twitter:description" content="{{ page_description | escape }}">
+  {% endif %}
+  {% if page_image %}
+    <meta name="twitter:image" content="https:{{ page_image | img_url: '1200x628' }}">
+  {% endif %}
+
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+
+  <!-- Styles -->
+  {{ 'base.css' | asset_url | stylesheet_tag }}
+</head>
+<body class="template-{{ template.name }}{% if template.suffix %} template-{{ template.name }}-{{ template.suffix }}{% endif %}">
+
+  <a class="skip-to-content-link" href="#MainContent">
+    {{ 'general.accessibility.skip_to_content' | t }}
+  </a>
+
+  {% section 'announcement-bar' %}
+  {% section 'header' %}
+
+  <main id="MainContent" role="main" tabindex="-1">
+    {{ content_for_layout }}
+  </main>
+
+  {% section 'footer' %}
+
+  <!-- Cart Drawer -->
+  <div id="CartDrawer" class="cart-drawer" aria-hidden="true" role="dialog" aria-label="{{ 'cart.title' | t }}" aria-modal="true">
+    <div class="cart-drawer__overlay" id="CartDrawerOverlay"></div>
+    <div class="cart-drawer__container">
+      <div class="cart-drawer__header">
+        <h2 class="cart-drawer__title">{{ 'cart.title' | t }}</h2>
+        <button class="cart-drawer__close" id="CartDrawerClose" aria-label="{{ 'cart.close' | t }}">
+          {% render 'icon-close' %}
+        </button>
+      </div>
+      <div class="cart-drawer__items" id="CartDrawerItems">
+        <div class="cart-drawer__loading">{{ 'cart.loading' | t }}</div>
+      </div>
+      <div class="cart-drawer__footer" id="CartDrawerFooter" style="display:none;">
+        <div class="cart-drawer__subtotal">
+          <span>{{ 'cart.subtotal' | t }}</span>
+          <span id="CartDrawerSubtotal"></span>
+        </div>
+        <p class="cart-drawer__shipping-note">{{ 'cart.shipping_note' | t }}</p>
+        <a href="/checkout" class="btn btn--primary btn--full">{{ 'cart.checkout' | t }}</a>
+        <a href="/cart" class="btn btn--outline btn--full">{{ 'cart.view_cart' | t }}</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search Overlay -->
+  <div id="SearchOverlay" class="search-overlay" aria-hidden="true" role="dialog" aria-label="{{ 'search.title' | t }}" aria-modal="true">
+    <div class="search-overlay__bg" id="SearchOverlayBg"></div>
+    <div class="search-overlay__container">
+      <button class="search-overlay__close" id="SearchOverlayClose" aria-label="{{ 'search.close' | t }}">
+        {% render 'icon-close' %}
+      </button>
+      <form class="search-overlay__form" action="/search" method="get" role="search">
+        <input type="hidden" name="type" value="product">
+        <input
+          class="search-overlay__input"
+          type="search"
+          name="q"
+          id="SearchOverlayInput"
+          placeholder="{{ 'search.placeholder' | t }}"
+          aria-label="{{ 'search.placeholder' | t }}"
+          autocomplete="off"
+        >
+        <button class="search-overlay__submit" type="submit" aria-label="{{ 'search.submit' | t }}">
+          {% render 'icon-search' %}
+        </button>
+      </form>
+    </div>
+  </div>
+
+  {{ 'theme.js' | asset_url | script_tag }}
+</body>
+</html>

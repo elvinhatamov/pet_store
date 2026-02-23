@@ -1,0 +1,60 @@
+<div class="account-template" style="max-width:900px;">
+  <a href="/account" style="display:inline-flex; align-items:center; gap:0.5rem; color:var(--color-primary); font-weight:600; margin-bottom:var(--spacing-lg);">
+    ← {{ 'customer.account.title' | t | default: 'Back to Account' }}
+  </a>
+
+  <h1 class="account-template__title">{{ 'customer.orders.order_number' | t | default: 'Order' }} #{{ order.order_number }}</h1>
+
+  <p style="color:var(--color-text-muted); margin-bottom:var(--spacing-xl);">
+    {{ 'customer.orders.placed_on' | t | default: 'Placed on' }}
+    {{ order.created_at | date: '%B %d, %Y' }}
+  </p>
+
+  <div style="display:grid; gap:var(--spacing-lg); margin-bottom:var(--spacing-xl);">
+    <div style="background:var(--color-surface); border-radius:var(--radius-lg); padding:var(--spacing-lg);">
+      <h2 style="font-size:var(--font-size-md); margin-bottom:var(--spacing-md);">{{ 'customer.orders.items' | t | default: 'Items' }}</h2>
+      <table class="order-table">
+        <thead>
+          <tr>
+            <th>{{ 'cart.product' | t | default: 'Product' }}</th>
+            <th>{{ 'cart.price' | t | default: 'Price' }}</th>
+            <th>{{ 'cart.quantity' | t | default: 'Qty' }}</th>
+            <th>{{ 'cart.total' | t | default: 'Total' }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for line_item in order.line_items -%}
+            <tr>
+              <td>
+                <p style="font-weight:600;">{{ line_item.title }}</p>
+                {%- unless line_item.variant.title == 'Default Title' -%}
+                  <p style="font-size:var(--font-size-xs); color:var(--color-text-muted);">{{ line_item.variant.title }}</p>
+                {%- endunless -%}
+              </td>
+              <td>{{ line_item.original_price | money }}</td>
+              <td>{{ line_item.quantity }}</td>
+              <td>{{ line_item.final_line_price | money }}</td>
+            </tr>
+          {%- endfor -%}
+        </tbody>
+      </table>
+      <div style="margin-top:var(--spacing-lg); text-align:right; border-top:1px solid var(--color-border); padding-top:var(--spacing-md);">
+        <p>{{ 'cart.subtotal' | t | default: 'Subtotal' }}: {{ order.subtotal_price | money }}</p>
+        {%- for shipping_method in order.shipping_methods -%}
+          <p>{{ shipping_method.title }}: {{ shipping_method.price | money }}</p>
+        {%- endfor -%}
+        {%- for tax_line in order.tax_lines -%}
+          <p>{{ tax_line.title }} ({{ tax_line.rate | times: 100 }}%): {{ tax_line.price | money }}</p>
+        {%- endfor -%}
+        <p style="font-weight:700; font-size:var(--font-size-md); margin-top:var(--spacing-sm);">{{ 'cart.total' | t | default: 'Total' }}: {{ order.total_price | money }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Order",
+  "settings": []
+}
+{% endschema %}

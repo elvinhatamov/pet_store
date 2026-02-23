@@ -1,0 +1,54 @@
+<div class="account-template">
+  <h1 class="account-template__title">{{ 'customer.login.title' | t | default: 'Log in' }}</h1>
+
+  {% form 'customer_login' %}
+    {%- if form.errors -%}
+      <div class="alert alert--error" role="alert">
+        {{ form.errors | default_errors }}
+      </div>
+    {%- endif -%}
+
+    <div class="form-field">
+      <label class="form-label" for="CustomerEmail">{{ 'customer.login.email' | t | default: 'Email' }}</label>
+      <input
+        class="form-input"
+        type="email"
+        name="customer[email]"
+        id="CustomerEmail"
+        autocomplete="email"
+        autocapitalize="off"
+        required
+      >
+    </div>
+
+    <div class="form-field">
+      <label class="form-label" for="CustomerPassword">
+        {{ 'customer.login.password' | t | default: 'Password' }}
+        <a href="/account/forgot_password" style="font-weight:400; color:var(--color-primary); float:right;">{{ 'customer.login.forgot_password' | t | default: 'Forgot password?' }}</a>
+      </label>
+      <input
+        class="form-input"
+        type="password"
+        name="customer[password]"
+        id="CustomerPassword"
+        autocomplete="current-password"
+        required
+      >
+    </div>
+
+    <button type="submit" class="btn btn--primary btn--full">{{ 'customer.login.submit' | t | default: 'Log in' }}</button>
+  {% endform %}
+
+  <hr class="divider">
+  <p class="text-center">
+    {{ 'customer.login.no_account' | t | default: "Don't have an account?" }}
+    <a href="/account/register" style="color:var(--color-primary); font-weight:600;">{{ 'customer.login.create_account' | t | default: 'Create one' }}</a>
+  </p>
+</div>
+
+{% schema %}
+{
+  "name": "Login",
+  "settings": []
+}
+{% endschema %}

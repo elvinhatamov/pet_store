@@ -1,0 +1,46 @@
+<div class="account-template">
+  <h1 class="account-template__title">{{ 'customer.register.title' | t | default: 'Create Account' }}</h1>
+
+  {% form 'create_customer' %}
+    {%- if form.errors -%}
+      <div class="alert alert--error" role="alert">
+        {{ form.errors | default_errors }}
+      </div>
+    {%- endif -%}
+
+    <div class="form-field">
+      <label class="form-label" for="FirstName">{{ 'customer.register.first_name' | t | default: 'First Name' }}</label>
+      <input class="form-input" type="text" name="customer[first_name]" id="FirstName" autocomplete="given-name">
+    </div>
+
+    <div class="form-field">
+      <label class="form-label" for="LastName">{{ 'customer.register.last_name' | t | default: 'Last Name' }}</label>
+      <input class="form-input" type="text" name="customer[last_name]" id="LastName" autocomplete="family-name">
+    </div>
+
+    <div class="form-field">
+      <label class="form-label" for="RegisterEmail">{{ 'customer.register.email' | t | default: 'Email' }}</label>
+      <input class="form-input" type="email" name="customer[email]" id="RegisterEmail" autocomplete="email" required>
+    </div>
+
+    <div class="form-field">
+      <label class="form-label" for="RegisterPassword">{{ 'customer.register.password' | t | default: 'Password' }}</label>
+      <input class="form-input" type="password" name="customer[password]" id="RegisterPassword" autocomplete="new-password" required>
+    </div>
+
+    <button type="submit" class="btn btn--primary btn--full">{{ 'customer.register.submit' | t | default: 'Create Account' }}</button>
+  {% endform %}
+
+  <hr class="divider">
+  <p class="text-center">
+    {{ 'customer.register.have_account' | t | default: 'Already have an account?' }}
+    <a href="/account/login" style="color:var(--color-primary); font-weight:600;">{{ 'customer.register.login' | t | default: 'Log in' }}</a>
+  </p>
+</div>
+
+{% schema %}
+{
+  "name": "Register",
+  "settings": []
+}
+{% endschema %}

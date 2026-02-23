@@ -1,0 +1,20 @@
+{
+  "current": {
+    "color_primary": "#2c5f2e",
+    "color_primary_hover": "#1e4220",
+    "color_accent": "#f4a261",
+    "color_background": "#ffffff",
+    "color_surface": "#f8f9fa",
+    "color_text": "#1a1a1a",
+    "color_text_muted": "#6c757d",
+    "color_border": "#e0e0e0",
+    "font_heading": "serif",
+    "font_body": "sans-serif",
+    "social_facebook_link": "",
+    "social_instagram_link": "",
+    "social_twitter_link": "",
+    "social_tiktok_link": "",
+    "social_youtube_link": "",
+    "social_pinterest_link": ""
+  }
+}

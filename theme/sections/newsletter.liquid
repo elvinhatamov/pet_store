@@ -1,0 +1,88 @@
+<section class="newsletter section-padding">
+  <div class="container">
+    <div class="section-header">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="section-header__title">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p class="section-header__subtitle">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+    </div>
+
+    {% form 'customer', id: 'NewsletterForm' %}
+      {% if form.posted_successfully? %}
+        <p class="newsletter__success text-center">🎉 {{ 'newsletter.success' | t | default: "Thanks for subscribing! Check your email for a confirmation." }}</p>
+      {% else %}
+        {% if form.errors %}
+          <div class="form-errors text-center" role="alert">
+            {% for error in form.errors %}
+              <p>{{ error | capitalize }}: {{ form.errors.messages[error] }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+        <div class="newsletter__form">
+          <input
+            class="newsletter__input"
+            type="email"
+            name="contact[email]"
+            id="NewsletterEmail"
+            value="{{ form.email }}"
+            placeholder="{{ section.settings.placeholder | default: 'Your email address' }}"
+            autocomplete="email"
+            required
+            aria-label="{{ section.settings.placeholder | default: 'Your email address' }}"
+          >
+          <button type="submit" class="btn btn--secondary newsletter__submit">
+            {{ section.settings.button_label | default: 'Subscribe' }}
+          </button>
+        </div>
+        {%- if section.settings.disclaimer != blank -%}
+          <p class="text-center mt-md" style="font-size:0.75rem; opacity:0.7;">{{ section.settings.disclaimer }}</p>
+        {%- endif -%}
+      {% endif %}
+    {% endform %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Join the M&M Pet Family"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Subscribe for exclusive deals, pet tips, and new product alerts"
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Email placeholder",
+      "default": "Enter your email address"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Subscribe"
+    },
+    {
+      "type": "text",
+      "id": "disclaimer",
+      "label": "Disclaimer text",
+      "default": "No spam, ever. Unsubscribe anytime."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter"
+    }
+  ]
+}
+{% endschema %}

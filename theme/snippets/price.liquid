@@ -1,0 +1,19 @@
+{%- liquid
+  assign target = variant | default: product.selected_or_first_available_variant
+  assign compare_at_price = target.compare_at_price
+  assign price = target.price
+  assign available = target.available
+-%}
+<div class="price">
+  {%- unless available -%}
+    <span class="price__sold-out">{{ 'product.sold_out' | t | default: 'Sold Out' }}</span>
+  {%- else -%}
+    {%- if compare_at_price > price -%}
+      <span class="price__current price__current--sale" data-price-current>{{ price | money }}</span>
+      <s class="price__compare" data-price-compare>{{ compare_at_price | money }}</s>
+    {%- else -%}
+      <span class="price__current" data-price-current>{{ price | money }}</span>
+      <s class="price__compare" data-price-compare style="display:none;"></s>
+    {%- endif -%}
+  {%- endunless -%}
+</div>

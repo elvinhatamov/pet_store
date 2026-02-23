@@ -1,0 +1,57 @@
+<div class="account-template" style="max-width:900px;">
+  <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:var(--spacing-xl);">
+    <h1 class="account-template__title" style="margin:0;">{{ 'customer.account.title' | t | default: 'My Account' }}</h1>
+    <a href="/account/logout" class="btn btn--ghost btn--sm">{{ 'customer.account.logout' | t | default: 'Log out' }}</a>
+  </div>
+
+  <nav class="account-nav" aria-label="Account navigation">
+    <a href="/account" class="active">{{ 'customer.account.orders' | t | default: 'Orders' }}</a>
+    <a href="/account/addresses">{{ 'customer.account.addresses' | t | default: 'Addresses' }}</a>
+  </nav>
+
+  <p style="margin-bottom:var(--spacing-xl);">
+    {{ 'customer.account.welcome' | t: name: customer.first_name | default: 'Welcome back, ' | append: customer.first_name | append: '!' }}
+  </p>
+
+  {%- if customer.orders.size > 0 -%}
+    <h2 style="margin-bottom:var(--spacing-lg);">{{ 'customer.account.order_history' | t | default: 'Order History' }}</h2>
+    <div style="overflow-x:auto;">
+      <table class="order-table">
+        <thead>
+          <tr>
+            <th>{{ 'customer.orders.order_number' | t | default: 'Order' }}</th>
+            <th>{{ 'customer.orders.date' | t | default: 'Date' }}</th>
+            <th>{{ 'customer.orders.payment_status' | t | default: 'Payment' }}</th>
+            <th>{{ 'customer.orders.fulfillment_status' | t | default: 'Fulfillment' }}</th>
+            <th>{{ 'customer.orders.total' | t | default: 'Total' }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for order in customer.orders -%}
+            <tr>
+              <td><a href="{{ order.customer_url }}">#{{ order.order_number }}</a></td>
+              <td>{{ order.created_at | date: '%B %d, %Y' }}</td>
+              <td>{{ order.financial_status | capitalize }}</td>
+              <td>{{ order.fulfillment_status | capitalize }}</td>
+              <td>{{ order.total_price | money }}</td>
+            </tr>
+          {%- endfor -%}
+        </tbody>
+      </table>
+    </div>
+  {%- else -%}
+    <div class="text-center" style="padding:3rem 0;">
+      <p style="font-size:3rem; margin-bottom:1rem;">📦</p>
+      <h2>{{ 'customer.account.no_orders' | t | default: 'No orders yet' }}</h2>
+      <p style="color:var(--color-text-muted); margin:1rem 0 2rem;">{{ 'customer.account.no_orders_text' | t | default: 'When you place an order, it will appear here.' }}</p>
+      <a href="/collections/all" class="btn btn--primary">{{ 'collection.all_products' | t | default: 'Start Shopping' }}</a>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Account",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,64 @@
+<nav class="breadcrumbs" aria-label="{{ 'general.breadcrumbs.title' | t | default: 'Breadcrumbs' }}">
+  <ol class="breadcrumbs__list" itemscope itemtype="https://schema.org/BreadcrumbList">
+    <li class="breadcrumbs__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a href="/" itemprop="item">
+        <span itemprop="name">{{ 'general.breadcrumbs.home' | t | default: 'Home' }}</span>
+      </a>
+      <meta itemprop="position" content="1">
+    </li>
+
+    {%- if template.name == 'collection' -%}
+      <li class="breadcrumbs__item" aria-hidden="true"><span class="breadcrumbs__sep">/</span></li>
+      <li class="breadcrumbs__item breadcrumbs__item--active" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <span itemprop="name">{{ collection.title }}</span>
+        <meta itemprop="position" content="2">
+      </li>
+
+    {%- elsif template.name == 'product' -%}
+      {%- if collection -%}
+        <li class="breadcrumbs__item" aria-hidden="true"><span class="breadcrumbs__sep">/</span></li>
+        <li class="breadcrumbs__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="{{ collection.url }}" itemprop="item"><span itemprop="name">{{ collection.title }}</span></a>
+          <meta itemprop="position" content="2">
+        </li>
+        <li class="breadcrumbs__item" aria-hidden="true"><span class="breadcrumbs__sep">/</span></li>
+        <li class="breadcrumbs__item breadcrumbs__item--active" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <span itemprop="name">{{ product.title }}</span>
+          <meta itemprop="position" content="3">
+        </li>
+      {%- else -%}
+        <li class="breadcrumbs__item" aria-hidden="true"><span class="breadcrumbs__sep">/</span></li>
+        <li class="breadcrumbs__item breadcrumbs__item--active" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <span itemprop="name">{{ product.title }}</span>
+          <meta itemprop="position" content="2">
+        </li>
+      {%- endif -%}
+
+    {%- elsif template.name == 'blog' -%}
+      <li class="breadcrumbs__item" aria-hidden="true"><span class="breadcrumbs__sep">/</span></li>
+      <li class="breadcrumbs__item breadcrumbs__item--active" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <span itemprop="name">{{ blog.title }}</span>
+        <meta itemprop="position" content="2">
+      </li>
+
+    {%- elsif template.name == 'article' -%}
+      <li class="breadcrumbs__item" aria-hidden="true"><span class="breadcrumbs__sep">/</span></li>
+      <li class="breadcrumbs__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a href="{{ blog.url }}" itemprop="item"><span itemprop="name">{{ blog.title }}</span></a>
+        <meta itemprop="position" content="2">
+      </li>
+      <li class="breadcrumbs__item" aria-hidden="true"><span class="breadcrumbs__sep">/</span></li>
+      <li class="breadcrumbs__item breadcrumbs__item--active" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <span itemprop="name">{{ article.title }}</span>
+        <meta itemprop="position" content="3">
+      </li>
+
+    {%- elsif template.name == 'page' -%}
+      <li class="breadcrumbs__item" aria-hidden="true"><span class="breadcrumbs__sep">/</span></li>
+      <li class="breadcrumbs__item breadcrumbs__item--active" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <span itemprop="name">{{ page.title }}</span>
+        <meta itemprop="position" content="2">
+      </li>
+    {%- endif -%}
+  </ol>
+</nav>

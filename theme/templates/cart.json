@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "cart-template",
+      "settings": {
+        "show_dynamic_checkout": true
+      }
+    }
+  },
+  "order": ["main"]
+}
