@@ -1,0 +1,45 @@
+{% if section.settings.show_announcement %}
+<div class="announcement-bar" style="background-color: {{ section.settings.bg_color }}; color: {{ section.settings.text_color }};" id="AnnouncementBar">
+  <div class="container">
+    <p class="announcement-bar__text">{{ section.settings.text }}</p>
+    <button class="announcement-bar__close" aria-label="Close announcement" id="CloseAnnouncement">&times;</button>
+  </div>
+</div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": "Show announcement bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Announcement text",
+      "default": "🐾 Free shipping on orders over $50! Use code PAWSOME"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#2c5f2e"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Announcement bar"
+    }
+  ]
+}
+{% endschema %}

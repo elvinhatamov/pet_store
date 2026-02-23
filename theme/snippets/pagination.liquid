@@ -1,0 +1,29 @@
+{%- if paginate.pages > 1 -%}
+  <nav class="pagination" role="navigation" aria-label="{{ 'general.pagination.label' | t | default: 'Pagination' }}">
+    {%- if paginate.previous -%}
+      <a class="pagination__item" href="{{ paginate.previous.url }}" aria-label="{{ 'general.pagination.previous' | t | default: 'Previous page' }}">
+        &#8592;
+      </a>
+    {%- else -%}
+      <span class="pagination__item pagination__item--disabled" aria-hidden="true">&#8592;</span>
+    {%- endif -%}
+
+    {%- for part in paginate.parts -%}
+      {%- if part.is_link -%}
+        <a class="pagination__item" href="{{ part.url }}" aria-label="{{ 'general.pagination.page' | t: number: part.title | default: 'Page ' | append: part.title }}">{{ part.title }}</a>
+      {%- elsif part.title == paginate.current_page -%}
+        <span class="pagination__item pagination__item--active" aria-current="page" aria-label="{{ 'general.pagination.current_page' | t: number: part.title | default: 'Page ' | append: part.title | append: ', current page' }}">{{ part.title }}</span>
+      {%- else -%}
+        <span class="pagination__item pagination__item--disabled" aria-hidden="true">{{ part.title }}</span>
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if paginate.next -%}
+      <a class="pagination__item" href="{{ paginate.next.url }}" aria-label="{{ 'general.pagination.next' | t | default: 'Next page' }}">
+        &#8594;
+      </a>
+    {%- else -%}
+      <span class="pagination__item pagination__item--disabled" aria-hidden="true">&#8594;</span>
+    {%- endif -%}
+  </nav>
+{%- endif -%}

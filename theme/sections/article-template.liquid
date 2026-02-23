@@ -1,0 +1,80 @@
+<div class="article-template">
+  <div class="container">
+    <a href="{{ blog.url }}" class="article-back-link">
+      ← {{ 'blog.back_to_blog' | t | default: 'Back to' }} {{ blog.title }}
+    </a>
+
+    <article>
+      <header class="article-header">
+        <h1 class="article-template__title">{{ article.title }}</h1>
+        <p class="article-header__meta">
+          {{ 'blog.posted_by' | t: author: article.author | default: 'By ' | append: article.author }}
+          &bull;
+          <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+            {{ article.published_at | date: '%B %d, %Y' }}
+          </time>
+          {%- if article.tags.size > 0 -%}
+            &bull;
+            {%- for tag in article.tags -%}
+              <a href="{{ blog.url }}/tagged/{{ tag | handle }}" style="color:var(--color-primary);">{{ tag }}</a>{%- unless forloop.last %}, {% endunless -%}
+            {%- endfor -%}
+          {%- endif -%}
+        </p>
+      </header>
+
+      {%- if article.image -%}
+        <div class="article-image">
+          <img src="{{ article.image | image_url: width: 1200 }}" alt="{{ article.image.alt | escape | default: article.title | escape }}" loading="eager" width="1200" height="675">
+        </div>
+      {%- endif -%}
+
+      <div class="article-content page-content">
+        {{ article.content }}
+      </div>
+
+      {%- if blog.comments_enabled? -%}
+        <hr class="divider">
+        <section style="margin-top:var(--spacing-2xl);">
+          <h2 style="margin-bottom:var(--spacing-xl);">{{ 'blog.comments' | t | default: 'Comments' }} ({{ article.comments_count }})</h2>
+          {%- for comment in article.comments -%}
+            <div style="border-bottom:1px solid var(--color-border); padding-block:var(--spacing-md);">
+              <p style="font-weight:600; margin-bottom:0.25rem;">{{ comment.author }}</p>
+              <p style="font-size:var(--font-size-xs); color:var(--color-text-muted); margin-bottom:var(--spacing-sm);">{{ comment.created_at | date: '%B %d, %Y' }}</p>
+              <p>{{ comment.content }}</p>
+            </div>
+          {%- endfor -%}
+
+          {% form 'new_comment', article %}
+            <h3 style="margin-top:var(--spacing-xl); margin-bottom:var(--spacing-lg);">{{ 'blog.leave_comment' | t | default: 'Leave a Comment' }}</h3>
+            {%- if form.errors -%}
+              <div class="alert alert--error">{{ form.errors | default_errors }}</div>
+            {%- endif -%}
+            {%- if form.posted_successfully? -%}
+              <div class="alert alert--success">{{ 'blog.comment_success' | t | default: 'Your comment has been submitted.' }}</div>
+            {%- endif -%}
+            <div class="form-field">
+              <label class="form-label" for="CommentAuthor">{{ 'blog.name' | t | default: 'Name' }}</label>
+              <input class="form-input" type="text" name="comment[author]" id="CommentAuthor" required>
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="CommentEmail">{{ 'blog.email' | t | default: 'Email' }}</label>
+              <input class="form-input" type="email" name="comment[email]" id="CommentEmail" required>
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="CommentBody">{{ 'blog.comment' | t | default: 'Comment' }}</label>
+              <textarea class="form-textarea" name="comment[body]" id="CommentBody" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn--primary">{{ 'blog.post_comment' | t | default: 'Post Comment' }}</button>
+          {% endform %}
+        </section>
+      {%- endif -%}
+    </article>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Article",
+  "settings": []
+}
+{% endschema %}

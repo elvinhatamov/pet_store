@@ -1,0 +1,134 @@
+<div class="cart-template">
+  <div class="container">
+    <h1 style="font-size:var(--font-size-2xl); font-weight:800; margin-bottom:var(--spacing-xl);">{{ 'cart.title' | t | default: 'Your Cart' }}</h1>
+
+    {%- if cart.item_count > 0 -%}
+      <div class="cart-layout">
+        <!-- Cart Items -->
+        <div>
+          {% form 'cart', cart %}
+            <table class="cart-table">
+              <thead>
+                <tr>
+                  <th>{{ 'cart.product' | t | default: 'Product' }}</th>
+                  <th>{{ 'cart.price' | t | default: 'Price' }}</th>
+                  <th>{{ 'cart.quantity' | t | default: 'Quantity' }}</th>
+                  <th>{{ 'cart.total' | t | default: 'Total' }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {%- for item in cart.items -%}
+                  <tr class="cart-item">
+                    <td>
+                      <div class="cart-item__product">
+                        <div class="cart-item__image">
+                          {%- if item.image -%}
+                            <img src="{{ item.image | image_url: width: 160 }}" alt="{{ item.title | escape }}" loading="lazy" width="80" height="80">
+                          {%- endif -%}
+                        </div>
+                        <div>
+                          <p class="cart-item__title"><a href="{{ item.url }}">{{ item.product.title }}</a></p>
+                          {%- unless item.variant.title == 'Default Title' -%}
+                            <p class="cart-item__variant">{{ item.variant.title }}</p>
+                          {%- endunless -%}
+                          <button class="cart-item__remove" type="button" data-remove-key="{{ item.key }}">
+                            {{ 'cart.remove' | t | default: 'Remove' }}
+                          </button>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="cart-item__price">{{ item.original_price | money }}</td>
+                    <td>
+                      <div class="quantity-selector cart-item__quantity">
+                        <button type="button" class="quantity-selector__btn" data-qty-btn="minus" aria-label="{{ 'product.quantity_decrease' | t | default: 'Decrease' }}">−</button>
+                        <input
+                          class="quantity-selector__input"
+                          type="number"
+                          name="updates[]"
+                          value="{{ item.quantity }}"
+                          min="0"
+                          aria-label="{{ 'cart.quantity' | t | default: 'Quantity' }}"
+                          data-line="{{ forloop.index }}"
+                        >
+                        <button type="button" class="quantity-selector__btn" data-qty-btn="plus" aria-label="{{ 'product.quantity_increase' | t | default: 'Increase' }}">+</button>
+                      </div>
+                    </td>
+                    <td class="cart-item__total">{{ item.final_line_price | money }}</td>
+                  </tr>
+                {%- endfor -%}
+              </tbody>
+            </table>
+
+            <!-- Cart Note -->
+            <div class="cart-note">
+              <label class="form-label" for="CartNote">{{ 'cart.note' | t | default: 'Order Notes (optional)' }}</label>
+              <textarea class="form-textarea" id="CartNote" name="note" rows="3" placeholder="{{ 'cart.note_placeholder' | t | default: 'Add special instructions for your order...' }}">{{ cart.note }}</textarea>
+            </div>
+
+            <div style="margin-top:var(--spacing-md); display:flex; gap:var(--spacing-md); flex-wrap:wrap;">
+              <button type="submit" name="update" class="btn btn--ghost">
+                {{ 'cart.update' | t | default: 'Update Cart' }}
+              </button>
+              <a href="/collections/all" class="btn btn--outline">
+                {{ 'cart.continue_shopping' | t | default: 'Continue Shopping' }}
+              </a>
+            </div>
+          {% endform %}
+        </div>
+
+        <!-- Cart Summary -->
+        <div>
+          <div class="cart-summary">
+            <h2 class="cart-summary__title">{{ 'cart.order_summary' | t | default: 'Order Summary' }}</h2>
+            <div class="cart-summary__row">
+              <span>{{ 'cart.subtotal' | t | default: 'Subtotal' }}</span>
+              <span>{{ cart.total_price | money }}</span>
+            </div>
+            <div class="cart-summary__row">
+              <span>{{ 'cart.shipping' | t | default: 'Shipping' }}</span>
+              <span>{{ 'cart.calculated_at_checkout' | t | default: 'Calculated at checkout' }}</span>
+            </div>
+            <div class="cart-summary__row cart-summary__row--total">
+              <span>{{ 'cart.total' | t | default: 'Total' }}</span>
+              <span>{{ cart.total_price | money }}</span>
+            </div>
+            <div class="cart-summary__actions">
+              <a href="/checkout" class="btn btn--primary btn--full btn--lg">
+                {{ 'cart.checkout' | t | default: 'Checkout' }}
+              </a>
+              {%- if additional_checkout_buttons and section.settings.show_dynamic_checkout -%}
+                <div class="additional-checkout-buttons">
+                  {{ content_for_additional_checkout_buttons }}
+                </div>
+              {%- endif -%}
+            </div>
+            <p style="font-size:0.75rem; color:var(--color-text-muted); text-align:center; margin-top:var(--spacing-md);">
+              🔒 {{ 'cart.secure_checkout_note' | t | default: 'Secure and encrypted checkout' }}
+            </p>
+          </div>
+        </div>
+      </div>
+    {%- else -%}
+      <div class="text-center" style="padding:4rem 0;">
+        <p style="font-size:4rem; margin-bottom:1rem;">🛒</p>
+        <h2 style="margin-bottom:1rem;">{{ 'cart.empty' | t | default: 'Your cart is empty' }}</h2>
+        <p style="color:var(--color-text-muted); margin-bottom:2rem;">{{ 'cart.empty_text' | t | default: 'Looks like you haven\'t added anything yet.' }}</p>
+        <a href="/collections/all" class="btn btn--primary btn--lg">{{ 'cart.start_shopping' | t | default: 'Start Shopping' }}</a>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Cart",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_dynamic_checkout",
+      "label": "Show dynamic checkout buttons",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

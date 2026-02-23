@@ -1,0 +1,126 @@
+<section class="hero-banner" style="min-height: {{ section.settings.height }}px;">
+  {%- if section.settings.background_image != blank -%}
+    <div class="hero-banner__media">
+      {{ section.settings.background_image | image_url: width: 1920 | image_tag: loading: 'eager', alt: section.settings.heading, class: '' }}
+    </div>
+    <div class="hero-banner__overlay" style="background: rgba(0,0,0,{{ section.settings.overlay_opacity | divided_by: 100.0 }});"></div>
+  {%- endif -%}
+
+  <div class="container">
+    <div class="hero-banner__content" style="{% if section.settings.content_align == 'center' %}margin-inline: auto; text-align: center;{% elsif section.settings.content_align == 'right' %}margin-left: auto; text-align: right;{% endif %}">
+      {%- if section.settings.subheading != blank -%}
+        <p class="hero-banner__subtitle">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.heading != blank -%}
+        <h1 class="hero-banner__title">{{ section.settings.heading }}</h1>
+      {%- endif -%}
+
+      {%- if section.settings.description != blank -%}
+        <p class="hero-banner__description">{{ section.settings.description }}</p>
+      {%- endif -%}
+
+      <div class="hero-banner__cta" {% if section.settings.content_align == 'center' %}style="justify-content:center;"{% elsif section.settings.content_align == 'right' %}style="justify-content:flex-end;"{% endif %}>
+        {%- if section.settings.button_label != blank -%}
+          <a href="{{ section.settings.button_link }}" class="btn btn--primary btn--lg">
+            {{ section.settings.button_label }}
+          </a>
+        {%- endif -%}
+        {%- if section.settings.secondary_button_label != blank -%}
+          <a href="{{ section.settings.secondary_button_link }}" class="btn btn--outline btn--lg" style="color:#fff; border-color:rgba(255,255,255,0.8);">
+            {{ section.settings.secondary_button_label }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay opacity",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "min": 300,
+      "max": 900,
+      "step": 50,
+      "unit": "px",
+      "label": "Section height",
+      "default": 600
+    },
+    {
+      "type": "select",
+      "id": "content_align",
+      "label": "Content alignment",
+      "default": "left",
+      "options": [
+        {"value": "left", "label": "Left"},
+        {"value": "center", "label": "Center"},
+        {"value": "right", "label": "Right"}
+      ]
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Welcome to M&M Pet Store"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Everything Your Pet Deserves"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Premium food, toys, and accessories for your beloved companions. Fast delivery, great prices, and a 100% happiness guarantee."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Primary button label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_label",
+      "label": "Secondary button label",
+      "default": "View Collections"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_link",
+      "label": "Secondary button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero banner"
+    }
+  ]
+}
+{% endschema %}

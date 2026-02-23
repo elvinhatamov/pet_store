@@ -1,0 +1,105 @@
+<div class="account-template" style="max-width:900px;">
+  <h1 class="account-template__title">{{ 'customer.addresses.title' | t | default: 'Addresses' }}</h1>
+
+  <nav class="account-nav">
+    <a href="/account">{{ 'customer.account.orders' | t | default: 'Orders' }}</a>
+    <a href="/account/addresses" class="active">{{ 'customer.account.addresses' | t | default: 'Addresses' }}</a>
+  </nav>
+
+  <!-- Add Address Form -->
+  <details style="margin-bottom:var(--spacing-xl);">
+    <summary class="btn btn--outline btn--sm" style="display:inline-flex; cursor:pointer; list-style:none;">
+      + {{ 'customer.addresses.add_new' | t | default: 'Add New Address' }}
+    </summary>
+    <div style="margin-top:var(--spacing-lg); padding:var(--spacing-xl); background:var(--color-surface); border-radius:var(--radius-lg);">
+      {% form 'customer_address', customer.new_address %}
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:var(--spacing-md);">
+          <div class="form-field">
+            <label class="form-label" for="AddressFirstName">{{ 'customer.addresses.first_name' | t | default: 'First Name' }}</label>
+            <input class="form-input" type="text" name="address[first_name]" id="AddressFirstName" autocomplete="given-name">
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="AddressLastName">{{ 'customer.addresses.last_name' | t | default: 'Last Name' }}</label>
+            <input class="form-input" type="text" name="address[last_name]" id="AddressLastName" autocomplete="family-name">
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="AddressCompany">{{ 'customer.addresses.company' | t | default: 'Company (optional)' }}</label>
+          <input class="form-input" type="text" name="address[company]" id="AddressCompany">
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="AddressAddress1">{{ 'customer.addresses.address1' | t | default: 'Address' }}</label>
+          <input class="form-input" type="text" name="address[address1]" id="AddressAddress1" autocomplete="address-line1" required>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="AddressAddress2">{{ 'customer.addresses.address2' | t | default: 'Apartment, suite, etc. (optional)' }}</label>
+          <input class="form-input" type="text" name="address[address2]" id="AddressAddress2" autocomplete="address-line2">
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:var(--spacing-md);">
+          <div class="form-field">
+            <label class="form-label" for="AddressCity">{{ 'customer.addresses.city' | t | default: 'City' }}</label>
+            <input class="form-input" type="text" name="address[city]" id="AddressCity" autocomplete="address-level2" required>
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="AddressZip">{{ 'customer.addresses.zip' | t | default: 'Zip / Postal Code' }}</label>
+            <input class="form-input" type="text" name="address[zip]" id="AddressZip" autocomplete="postal-code">
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="AddressCountry">{{ 'customer.addresses.country' | t | default: 'Country' }}</label>
+          <select class="form-select" name="address[country]" id="AddressCountry" autocomplete="country-name">
+            {{ all_country_option_tags }}
+          </select>
+        </div>
+        <div class="form-field">
+          <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+            <input type="checkbox" name="address[default]" value="1">
+            {{ 'customer.addresses.set_default' | t | default: 'Set as default address' }}
+          </label>
+        </div>
+        <button type="submit" class="btn btn--primary">{{ 'customer.addresses.add' | t | default: 'Add Address' }}</button>
+      {% endform %}
+    </div>
+  </details>
+
+  <!-- Existing Addresses -->
+  <div class="address-grid">
+    {%- for address in customer.addresses -%}
+      <div class="address-card {% if address == customer.default_address %}address-card--default{% endif %}">
+        {%- if address == customer.default_address -%}
+          <p class="address-card__badge">✓ {{ 'customer.addresses.default' | t | default: 'Default' }}</p>
+        {%- endif -%}
+        <address style="font-style:normal; line-height:1.7;">
+          {{ address.name }}<br>
+          {%- if address.company != blank -%}{{ address.company }}<br>{%- endif -%}
+          {{ address.address1 }}<br>
+          {%- if address.address2 != blank -%}{{ address.address2 }}<br>{%- endif -%}
+          {{ address.city }}, {{ address.province_code }} {{ address.zip }}<br>
+          {{ address.country }}
+        </address>
+        <div class="address-card__actions">
+          <a href="/account/addresses/{{ address.id }}" class="btn btn--ghost btn--sm">{{ 'customer.addresses.edit' | t | default: 'Edit' }}</a>
+          <button
+            type="button"
+            class="btn btn--ghost btn--sm"
+            style="color:var(--color-error);"
+            data-confirm-delete="{{ 'customer.addresses.delete_confirm' | t | default: 'Are you sure you want to delete this address?' }}"
+            onclick="if(confirm(this.dataset.confirmDelete)){document.getElementById('address-form-{{ address.id }}').submit();}"
+          >
+            {{ 'customer.addresses.delete' | t | default: 'Delete' }}
+          </button>
+          {% form 'customer_address', address, id: 'address-form-' | append: address.id %}
+            <input type="hidden" name="_method" value="delete">
+          {% endform %}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Addresses",
+  "settings": []
+}
+{% endschema %}

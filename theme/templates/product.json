@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "main": {
+      "type": "product-template",
+      "settings": {
+        "show_related": true,
+        "shipping_message": "Free shipping on orders over $50. Ships within 1\u20133 business days."
+      }
+    }
+  },
+  "order": ["main"]
+}

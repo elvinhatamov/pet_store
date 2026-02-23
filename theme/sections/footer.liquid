@@ -1,0 +1,129 @@
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <!-- Brand Column -->
+      <div class="footer-brand">
+        <div class="footer-brand__logo">
+          {%- if section.settings.footer_logo != blank -%}
+            {{ section.settings.footer_logo | image_url: width: 160 | image_tag: alt: shop.name, loading: 'lazy' }}
+          {%- else -%}
+            {{ shop.name }}
+          {%- endif -%}
+        </div>
+        {%- if section.settings.tagline != blank -%}
+          <p class="footer-brand__tagline">{{ section.settings.tagline }}</p>
+        {%- endif -%}
+        <div class="footer-social">
+          {% render 'social-icons' %}
+        </div>
+      </div>
+
+      <!-- Link Columns -->
+      {%- for i in (1..3) -%}
+        {%- assign menu_key = 'menu_' | append: i -%}
+        {%- assign title_key = 'menu_' | append: i | append: '_title' -%}
+        {%- assign linklist = linklists[section.settings[menu_key]] -%}
+        {%- if linklist.links.size > 0 -%}
+          <div class="footer-col">
+            <h3 class="footer-col__title">{{ section.settings[title_key] | default: linklist.title }}</h3>
+            <ul class="footer-col__links">
+              {%- for link in linklist.links -%}
+                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <p class="footer-bottom__copyright">
+        &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ 'footer.copyright' | t | default: 'All rights reserved.' }}
+        {%- if section.settings.powered_by -%}
+          &nbsp;Powered by <a href="https://www.shopify.com" target="_blank" rel="noopener noreferrer" style="color:inherit;">Shopify</a>.
+        {%- endif -%}
+      </p>
+      {%- if section.settings.payment_methods != blank -%}
+        <div class="footer-payment">
+          <span>We accept:</span>
+          <span>{{ section.settings.payment_methods }}</span>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "footer_logo",
+      "label": "Footer logo"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Brand tagline",
+      "default": "Premium products for your beloved pets. 🐾"
+    },
+    {
+      "type": "header",
+      "content": "Navigation columns"
+    },
+    {
+      "type": "text",
+      "id": "menu_1_title",
+      "label": "Column 1 title",
+      "default": "Shop"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_1",
+      "label": "Column 1 menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "text",
+      "id": "menu_2_title",
+      "label": "Column 2 title",
+      "default": "Help"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_2",
+      "label": "Column 2 menu",
+      "default": "footer"
+    },
+    {
+      "type": "text",
+      "id": "menu_3_title",
+      "label": "Column 3 title",
+      "default": "Company"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_3",
+      "label": "Column 3 menu"
+    },
+    {
+      "type": "header",
+      "content": "Bottom bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "powered_by",
+      "label": "Show 'Powered by Shopify'",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "payment_methods",
+      "label": "Accepted payment methods (text)",
+      "default": "Visa, Mastercard, PayPal, Apple Pay, Google Pay"
+    }
+  ]
+}
+{% endschema %}
